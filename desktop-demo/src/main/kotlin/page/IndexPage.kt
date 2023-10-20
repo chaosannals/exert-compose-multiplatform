@@ -10,19 +10,28 @@ import kotlinx.coroutines.launch
 import navigate
 
 @Composable
+fun IndexButton(
+    route: String
+) {
+    val coroutineScope = rememberCoroutineScope()
+    Button(
+        onClick = {
+            coroutineScope.launch {
+                navigate.emit(route)
+            }
+        }
+    ) {
+        Text(route)
+    }
+}
+
+@Composable
 @Preview
 fun IndexPage() {
     val coroutineScope = rememberCoroutineScope()
 
     Column {
-        Button(
-            onClick = {
-                coroutineScope.launch {
-                    navigate.emit("/web/retrofit-demo-page")
-                }
-            }
-        ) {
-            Text("retrofit-demo-page")
-        }
+        IndexButton("/web/retrofit-demo-page")
+        IndexButton("/aio/flow-demo-page")
     }
 }

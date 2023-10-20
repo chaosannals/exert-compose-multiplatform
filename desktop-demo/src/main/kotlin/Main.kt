@@ -31,6 +31,7 @@ fun App() {
         ) {
             buildRoot()
             buildWeb()
+            buildAio()
         }
     }
 }

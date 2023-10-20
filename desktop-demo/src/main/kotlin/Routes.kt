@@ -4,6 +4,7 @@ import moe.tlaster.precompose.navigation.transition.NavTransition
 import page.EnterPage
 import page.IndexPage
 import page.LoginPage
+import page.aio.FlowDemoPage
 import page.web.RetrofitDemoPage
 
 val navigate = MutableSharedFlow<String>()
@@ -35,5 +36,14 @@ fun RouteBuilder.buildWeb() {
         navTransition = NavTransition(),
     ) {
         RetrofitDemoPage()
+    }
+}
+
+fun RouteBuilder.buildAio() {
+    scene(
+        route="/aio/flow-demo-page",
+        navTransition = NavTransition(),
+    ) {
+        FlowDemoPage()
     }
 }
