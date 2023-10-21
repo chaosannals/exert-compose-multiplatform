@@ -4,6 +4,7 @@ plugins {
     // 版本号由 settings.gradle.kts 加载 gradle.properties 后给出
     kotlin("jvm") // version "1.9.0"
     id("org.jetbrains.compose") // version "1.5.0"
+    id("org.jetbrains.kotlin.plugin.serialization")
 }
 
 group = "com.example"
@@ -28,8 +29,13 @@ dependencies {
     api("moe.tlaster:precompose-koin:$precomposeVersion") // For Koin intergration
 
     val ktorVersion = "2.3.5"
-    implementation("io.ktor:ktor-server-core:$ktorVersion")
-    implementation("io.ktor:ktor-server-netty:$ktorVersion")
+    implementation("io.ktor:ktor-server-core:$ktorVersion") // 核心库
+    implementation("io.ktor:ktor-server-netty:$ktorVersion") // Netty
+    implementation("io.ktor:ktor-server-cors:$ktorVersion") // 跨域
+    implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion") // JSON 序列化
+
+    // HTML 内置语法
+    implementation("org.jetbrains.kotlinx:kotlinx-html:0.9.1")
 }
 
 compose.desktop {
