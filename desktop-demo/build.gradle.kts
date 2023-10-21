@@ -38,6 +38,7 @@ dependencies {
     implementation("io.ktor:ktor-server-netty:$ktorVersion") // Netty
     implementation("io.ktor:ktor-server-cors:$ktorVersion") // 跨域
     implementation("io.ktor:ktor-server-content-negotiation:$ktorVersion") // 内容转化
+    implementation("io.ktor:ktor-server-resources:$ktorVersion") //
     // JSON 序列化可 3选1 ，一般还是统一使用 kotlin 扩展库的
     // implementation("io.ktor:ktor-gson:$ktorVersion") // 谷歌  JSON 序列化
     // implementation("io.ktor:ktor-serialization-jackson:$ktorVersion") // Jackson JSON 序列化
@@ -45,6 +46,22 @@ dependencies {
     implementation("io.ktor:ktor-serialization-kotlinx-xml:$ktorVersion") // XML 序列化
     implementation("io.ktor:ktor-serialization-kotlinx-cbor:$ktorVersion") // CBOR 序列化
     implementation("io.ktor:ktor-serialization-kotlinx-protobuf:$ktorVersion") // Protobuf 序列化
+
+    // 数据库
+    val exposedVersion = "0.44.0"
+    implementation("org.jetbrains.exposed:exposed-core:$exposedVersion")
+    implementation("org.jetbrains.exposed:exposed-crypt:$exposedVersion")
+    implementation("org.jetbrains.exposed:exposed-dao:$exposedVersion")
+    implementation("org.jetbrains.exposed:exposed-jdbc:$exposedVersion")
+    // 时间库 3 选 1 ，kotlin
+    //implementation("org.jetbrains.exposed:exposed-jodatime:$exposedVersion")
+    //implementation("org.jetbrains.exposed:exposed-java-time:$exposedVersion")
+    implementation("org.jetbrains.exposed:exposed-kotlin-datetime:$exposedVersion")
+    implementation("org.jetbrains.exposed:exposed-json:$exposedVersion")
+    implementation("org.jetbrains.exposed:exposed-money:$exposedVersion")
+    // 没用到 spring-boot
+    // implementation("org.jetbrains.exposed:exposed-spring-boot-starter:$exposedVersion")
+    implementation("com.h2database:h2:2.2.224")
 
     // HTML 内置语法
     implementation("org.jetbrains.kotlinx:kotlinx-html:0.9.1")

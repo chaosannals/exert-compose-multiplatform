@@ -33,5 +33,6 @@ fun IndexPage() {
     Column {
         IndexButton("/web/retrofit-demo-page")
         IndexButton("/aio/flow-demo-page")
+        IndexButton("/db/demo-page")
     }
 }

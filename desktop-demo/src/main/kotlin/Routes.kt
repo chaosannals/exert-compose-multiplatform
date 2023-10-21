@@ -5,6 +5,7 @@ import page.EnterPage
 import page.IndexPage
 import page.LoginPage
 import page.aio.FlowDemoPage
+import page.db.DbDemoPage
 import page.web.RetrofitDemoPage
 
 val navigate = MutableSharedFlow<String>()
@@ -45,5 +46,14 @@ fun RouteBuilder.buildAio() {
         navTransition = NavTransition(),
     ) {
         FlowDemoPage()
+    }
+}
+
+fun RouteBuilder.buildDb() {
+    scene(
+        route="/db/demo-page",
+        navTransition = NavTransition(),
+    ) {
+        DbDemoPage()
     }
 }

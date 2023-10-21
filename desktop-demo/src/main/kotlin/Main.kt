@@ -12,6 +12,7 @@ import moe.tlaster.precompose.PreComposeWindow
 import moe.tlaster.precompose.navigation.NavHost
 import moe.tlaster.precompose.navigation.rememberNavigator
 import moe.tlaster.precompose.navigation.transition.NavTransition
+import org.jetbrains.exposed.sql.Database
 import server.myModule
 
 @Composable
@@ -34,11 +35,21 @@ fun App() {
             buildRoot()
             buildWeb()
             buildAio()
+            buildDb()
         }
     }
 }
 
 fun main() = application {
+
+    Database.connect(
+        "jdbc:h2:mem:test",
+        driver = "org.h2.Driver",
+        user = "root",
+        password = ""
+    )
+
+
     PickDensity()
     val width by widthDp.collectAsState()
     val height by heightDp.collectAsState()

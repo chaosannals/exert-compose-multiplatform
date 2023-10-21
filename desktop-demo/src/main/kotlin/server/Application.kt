@@ -9,6 +9,7 @@ import io.ktor.server.application.*
 import io.ktor.server.plugins.contentnegotiation.*
 import io.ktor.server.plugins.cors.routing.*
 import io.ktor.server.request.*
+import io.ktor.server.resources.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.util.reflect.*
@@ -26,7 +27,7 @@ import server.messages.User
 
 @OptIn(ExperimentalSerializationApi::class)
 fun Application.myModule() {
-
+    install(Resources)
     install(ContentNegotiation) {
         // xml 和 json cbor protobuf 互斥。。。。不能单独指定
 //        xml(format = XML {
