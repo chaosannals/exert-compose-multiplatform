@@ -1,22 +1,48 @@
 package server
 
 import io.ktor.http.*
+import io.ktor.serialization.kotlinx.cbor.*
+import io.ktor.serialization.kotlinx.json.*
+import io.ktor.serialization.kotlinx.protobuf.*
+import io.ktor.serialization.kotlinx.xml.*
 import io.ktor.server.application.*
+import io.ktor.server.plugins.contentnegotiation.*
 import io.ktor.server.plugins.cors.routing.*
+import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import io.ktor.util.reflect.*
 import kotlinx.html.*
 import kotlinx.html.dom.create
 import kotlinx.html.dom.document
 import kotlinx.html.stream.createHTML
+import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.cbor.Cbor
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.protobuf.ProtoBuf
+import nl.adaptivity.xmlutil.XmlDeclMode
+import nl.adaptivity.xmlutil.serialization.XML
 import server.messages.User
 
-val json = Json {
-
-}
-
+@OptIn(ExperimentalSerializationApi::class)
 fun Application.myModule() {
+
+    install(ContentNegotiation) {
+        // xml 和 json cbor protobuf 互斥。。。。不能单独指定
+//        xml(format = XML {
+//            xmlDeclMode = XmlDeclMode.Charset
+//        })
+        json(Json {
+            prettyPrint = true
+            isLenient = true
+        })
+//        cbor(Cbor { // ExperimentalSerializationApi
+//            ignoreUnknownKeys = true
+//        })
+//        protobuf(ProtoBuf {
+//            encodeDefaults = true
+//        })
+    }
     install(CORS) {
         allowMethod(HttpMethod.Options)
         allowMethod(HttpMethod.Put)
@@ -71,14 +97,29 @@ fun Application.myModule() {
                 }
             )
         }
-        post("/users") {
-            call.response.header("Content-Type", "application/json")
+
+        get("/user/{id}") {
+            val uri = call.request.uri
+            val id = call.parameters["id"]
             call.respond(
-                listOf(
+                User(id?.toLong() ?: 0, "uri: $uri", "id：$id")
+            )
+        }
+
+        get("/users") {
+            call.respond(
+                message = listOf(
                     User(1, "n1", "a1"),
                     User(2, "n2", "a2"),
-                )
+                ),
             )
+        }
+    }
+
+    // 拦截
+    intercept(ApplicationCallPipeline.Call) {
+        if (call.request.uri == "/aaa") {
+            call.respondText("aaa")
         }
     }
 }

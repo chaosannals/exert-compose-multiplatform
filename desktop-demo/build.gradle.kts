@@ -18,7 +18,6 @@ repositories {
 
 dependencies {
     implementation(compose.desktop.currentOs)
-    implementation("com.squareup.retrofit2:retrofit:2.9.0")
     api(compose.foundation)
     api(compose.animation)
 
@@ -28,11 +27,24 @@ dependencies {
     api("moe.tlaster:precompose-viewmodel:$precomposeVersion") // For ViewModel intergration
     api("moe.tlaster:precompose-koin:$precomposeVersion") // For Koin intergration
 
+    // http 前端
+    val retrofitVersion = "2.9.0"
+    implementation("com.squareup.retrofit2:retrofit:$retrofitVersion")
+    implementation("com.squareup.retrofit2:converter-gson:$retrofitVersion")
+
+    // http 后端
     val ktorVersion = "2.3.5"
     implementation("io.ktor:ktor-server-core:$ktorVersion") // 核心库
     implementation("io.ktor:ktor-server-netty:$ktorVersion") // Netty
     implementation("io.ktor:ktor-server-cors:$ktorVersion") // 跨域
-    implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion") // JSON 序列化
+    implementation("io.ktor:ktor-server-content-negotiation:$ktorVersion") // 内容转化
+    // JSON 序列化可 3选1 ，一般还是统一使用 kotlin 扩展库的
+    // implementation("io.ktor:ktor-gson:$ktorVersion") // 谷歌  JSON 序列化
+    // implementation("io.ktor:ktor-serialization-jackson:$ktorVersion") // Jackson JSON 序列化
+    implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion") // kotlin 扩展库 JSON 序列化
+    implementation("io.ktor:ktor-serialization-kotlinx-xml:$ktorVersion") // XML 序列化
+    implementation("io.ktor:ktor-serialization-kotlinx-cbor:$ktorVersion") // CBOR 序列化
+    implementation("io.ktor:ktor-serialization-kotlinx-protobuf:$ktorVersion") // Protobuf 序列化
 
     // HTML 内置语法
     implementation("org.jetbrains.kotlinx:kotlinx-html:0.9.1")
