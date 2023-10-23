@@ -8,6 +8,7 @@ import androidx.compose.ui.window.rememberWindowState
 import io.ktor.server.application.*
 import io.ktor.server.engine.*
 import io.ktor.server.netty.*
+import kotlinx.coroutines.launch
 import moe.tlaster.precompose.PreComposeWindow
 import moe.tlaster.precompose.navigation.NavHost
 import moe.tlaster.precompose.navigation.rememberNavigator
@@ -36,19 +37,23 @@ fun App() {
             buildWeb()
             buildAio()
             buildDb()
+            buildNet()
         }
     }
 }
 
 fun main() = application {
+    val coroutineScope = rememberCoroutineScope()
 
-    Database.connect(
-        "jdbc:h2:mem:test",
-        driver = "org.h2.Driver",
-        user = "root",
-        password = ""
-    )
-
+    coroutineScope.launch {
+        database.emit(Database.connect(
+//            "jdbc:h2:mem:test",
+            "jdbc:h2:file:~/test.db", // 不同平台路径不好确定，没有专门的路径管理系统。用户空间路径 ~ 是统一的。
+            driver = "org.h2.Driver",
+            user = "root",
+            password = ""
+        ))
+    }
 
     PickDensity()
     val width by widthDp.collectAsState()

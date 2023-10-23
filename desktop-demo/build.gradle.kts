@@ -65,6 +65,13 @@ dependencies {
 
     // HTML 内置语法
     implementation("org.jetbrains.kotlinx:kotlinx-html:0.9.1")
+
+    // SSH
+    implementation("org.apache.sshd:sshd-core:2.11.0") // mina sshd
+    implementation("com.jcraft:jsch:0.1.55") // Jsch
+
+    // UI
+    implementation("com.darkrockstudios:mpfilepicker:2.1.0") // 文件浏览器
 }
 
 compose.desktop {

@@ -34,5 +34,8 @@ fun IndexPage() {
         IndexButton("/web/retrofit-demo-page")
         IndexButton("/aio/flow-demo-page")
         IndexButton("/db/demo-page")
+        IndexButton("/net/jsch-ssh-client-page")
+        IndexButton("/net/mina-sshd-client-page")
+        IndexButton("/net/mina-sshd-server-page")
     }
 }

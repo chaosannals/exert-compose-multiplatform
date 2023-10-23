@@ -6,6 +6,9 @@ import page.IndexPage
 import page.LoginPage
 import page.aio.FlowDemoPage
 import page.db.DbDemoPage
+import page.net.JschSshClientPage
+import page.net.MinaSshdClientPage
+import page.net.MinaSshdServerPage
 import page.web.RetrofitDemoPage
 
 val navigate = MutableSharedFlow<String>()
@@ -55,5 +58,26 @@ fun RouteBuilder.buildDb() {
         navTransition = NavTransition(),
     ) {
         DbDemoPage()
+    }
+}
+
+fun RouteBuilder.buildNet() {
+    scene(
+        route="/net/jsch-ssh-client-page",
+        navTransition = NavTransition(),
+    ) {
+        JschSshClientPage()
+    }
+    scene(
+        route="/net/mina-sshd-client-page",
+        navTransition = NavTransition(),
+    ) {
+        MinaSshdClientPage()
+    }
+    scene(
+        route="/net/mina-sshd-server-page",
+        navTransition = NavTransition(),
+    ) {
+        MinaSshdServerPage()
     }
 }
