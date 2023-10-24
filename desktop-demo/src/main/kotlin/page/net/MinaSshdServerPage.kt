@@ -53,8 +53,8 @@ fun MinaSshdServerPage() {
     ) {
         Button(
             onClick = {
-                val homeDir = Paths.get(".").toAbsolutePath()
-                val keyPath = homeDir.resolve("host.key")
+                val homeDir = Paths.get(System.getProperty("user.home")).toAbsolutePath()
+                val keyPath = Paths.get(homeDir.toString(), ".ssh", "id_rsa")
                 System.out.println("keyPath: $keyPath")
                 server.host = host
                 server.port = port.toInt()
@@ -75,7 +75,7 @@ fun MinaSshdServerPage() {
 
                 // sftp 子系统
                 server.subsystemFactories = listOf(SftpSubsystemFactory())
-                // sftp 默认目录
+                // sftp 默认目录 /
                 System.out.println("sftp home: $homeDir")
                 server.fileSystemFactory = object: VirtualFileSystemFactory(homeDir) {
                     override fun getUserHomeDir(session: SessionContext?): Path {

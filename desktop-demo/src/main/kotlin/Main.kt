@@ -7,6 +7,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
 import io.ktor.server.application.*
@@ -69,6 +70,7 @@ fun App() {
 
 fun main() = application {
     val coroutineScope = rememberCoroutineScope()
+    val icon = painterResource("logo.png")
 
     coroutineScope.launch {
         database.emit(Database.connect(
@@ -102,6 +104,7 @@ fun main() = application {
         onCloseRequest = ::exitApplication,
         title = "Compose Multiplatform for Desktop Demo.",
         state = state,
+        icon = icon,
         resizable = true,
     ) {
         App()

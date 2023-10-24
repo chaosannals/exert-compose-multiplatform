@@ -81,6 +81,11 @@ compose.desktop {
     application {
         mainClass = "MainKt"
 
+        // 关闭 packageRelease* 的代码混淆，不然会失败。
+        buildTypes.release.proguard {
+            isEnabled.set(false)
+        }
+
         nativeDistributions {
             // 每种格式都依赖特定的打包工具。
             // gradle 的 compose desktop 分组下的 package* 任务
@@ -95,6 +100,19 @@ compose.desktop {
                 TargetFormat.Deb, // 不支持交叉编译，在 windows 提示 （packageDeb SKIPPED）跳过了。
                 TargetFormat.Rpm, // 不支持交叉编译，在 windows 提示 （packageRpm SKIPPED）跳过了。
             )
+            macOS {
+                iconFile.set(project.file("logo.icns"))
+            }
+            windows {
+                iconFile.set(project.file("logo.ico"))
+            }
+            linux {
+                iconFile.set(project.file("logo.png"))
+            }
+
+            // 通过 suggestRuntimeModules 获取
+            modules("java.instrument", "java.management", "java.rmi", "java.security.jgss", "java.sql", "jdk.unsupported")
+
             packageName = "desktop-demo"
             packageVersion = "1.0.0"
         }
