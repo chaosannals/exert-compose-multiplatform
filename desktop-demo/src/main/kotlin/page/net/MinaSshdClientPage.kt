@@ -12,6 +12,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import com.darkrockstudios.libraries.mpfilepicker.FilePicker
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.launch
 import org.apache.sshd.client.SshClient
 import org.apache.sshd.client.channel.ClientChannelEvent
 import util.keyPair
@@ -33,7 +34,7 @@ val minaSshdClient = MutableStateFlow<SshClient>(SshClient.setUpDefaultClient())
 fun MinaSshdClientPage() {
     val client by minaSshdClient.collectAsState()
     var host by remember {
-        mutableStateOf("")
+        mutableStateOf("127.0.0.1")
     }
     var port by remember {
         mutableStateOf("22")
@@ -56,7 +57,7 @@ fun MinaSshdClientPage() {
 
     FilePicker(
         show = isShowPrivateKey,
-        // fileExtensions = listOf("pem", "ppk"),
+        // fileExtensions = listOf("pem", "ppk", "key"),
     ) {
         isShowPrivateKey = false
         it?.run {
@@ -67,6 +68,11 @@ fun MinaSshdClientPage() {
                 .decodeToString()
             System.out.println(privateKey)
         }
+    }
+
+    val coroutineScope = rememberCoroutineScope()
+    LaunchedEffect(Unit) {
+        client.start()
     }
 
     val scrollState = rememberScrollState()
@@ -101,26 +107,28 @@ fun MinaSshdClientPage() {
         }
         Button(
             onClick = {
-                try {
-                    client.start()
-                    client.connect(user, host, port.toInt()).verify(4000).session.use {
-                        val priKey = readPrivateKey(privateKey)
-                        it.addPublicKeyIdentity(priKey.keyPair)
-                        it.auth().verify(4000)
-                        System.out.println("session auth")
-                        it.createExecChannel("pwd").use {
-                            ByteArrayOutputStream().use { stream ->
-                                it.out = stream
-                                it.err = stream
-                                it.open().verify(10000)
-                                System.out.println("channel auth")
-                                it.waitFor(EnumSet.of(ClientChannelEvent.CLOSED), 0L)
-                                privateKey = stream.toString()
+                coroutineScope.launch {
+                    try {
+                        client.connect(user, host, port.toInt()).verify(4000).session.use {
+                           val priKey = readPrivateKey(privateKey)
+                           it.addPublicKeyIdentity(priKey.keyPair)
+                            // it.addPasswordIdentity("123456")
+                            it.auth().verify(4000)
+                            System.out.println("session auth")
+                            it.createExecChannel("pwd").use {
+                                ByteArrayOutputStream().use { stream ->
+                                    it.out = stream
+                                    it.err = stream
+                                    it.open().verify(10000)
+                                    System.out.println("channel auth")
+                                    it.waitFor(EnumSet.of(ClientChannelEvent.CLOSED), 10000L)
+                                    privateKey = stream.toString()
+                                }
                             }
                         }
+                    } catch (t: Throwable) {
+                        System.out.println(t.message)
                     }
-                } catch (t: Throwable) {
-                    System.out.println(t.message)
                 }
             }
         ) {

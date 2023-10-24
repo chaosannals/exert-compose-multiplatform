@@ -1,8 +1,12 @@
 import androidx.compose.desktop.ui.tooling.preview.Preview
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
 import androidx.compose.runtime.*
-import androidx.compose.ui.window.Window
-import androidx.compose.ui.window.WindowState
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
 import io.ktor.server.application.*
@@ -19,25 +23,46 @@ import server.myModule
 @Composable
 @Preview
 fun App() {
+    val coroutineScope = rememberCoroutineScope()
+
     MaterialTheme {
         val navigator = rememberNavigator()
 
         LaunchedEffect(Unit) {
             navigate.collect {
-                navigator.navigate(it)
+                if (it == "[back]") {
+                    navigator.goBack()
+                } else {
+                    navigator.navigate(it)
+                }
             }
         }
-
-        NavHost(
-            navigator = navigator,
-            navTransition = NavTransition(),
-            initialRoute = "/enter"
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
         ) {
-            buildRoot()
-            buildWeb()
-            buildAio()
-            buildDb()
-            buildNet()
+            Row {
+                Button(
+                    onClick = {
+                        coroutineScope.launch {
+                            navigate.emit("[back]")
+                        }
+                    }
+                ) {
+                    Text("返回")
+                }
+            }
+            NavHost(
+                navigator = navigator,
+                navTransition = NavTransition(),
+                initialRoute = "/enter"
+            ) {
+                buildRoot()
+                buildWeb()
+                buildAio()
+                buildDb()
+                buildNet()
+            }
         }
     }
 }

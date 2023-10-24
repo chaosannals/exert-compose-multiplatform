@@ -67,7 +67,10 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-html:0.9.1")
 
     // SSH
-    implementation("org.apache.sshd:sshd-core:2.11.0") // mina sshd
+    val minaSshdVersion = "2.11.0"
+    implementation("org.apache.sshd:sshd-core:$minaSshdVersion") // mina sshd client 和 server
+    implementation("org.apache.sshd:sshd-scp:$minaSshdVersion") // mina sshd scp
+    implementation("org.apache.sshd:sshd-sftp:$minaSshdVersion") // mina sshd sftp
     implementation("com.jcraft:jsch:0.1.55") // Jsch
 
     // UI
