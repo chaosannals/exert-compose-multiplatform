@@ -82,9 +82,11 @@ compose.desktop {
         mainClass = "MainKt"
 
         // 关闭 packageRelease* 的代码混淆，不然会失败。
-        buildTypes.release.proguard {
-            isEnabled.set(false)
-        }
+        // 使用 package* 进行打包，packageRelease* = package* + ProGuard
+        // 在不启用混淆的情况下，使用 package*
+        // buildTypes.release.proguard {
+        //     isEnabled.set(false)
+        // }
 
         nativeDistributions {
             // 每种格式都依赖特定的打包工具。
