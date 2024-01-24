@@ -32,10 +32,13 @@ fun IndexPage() {
 
     Column {
         IndexButton("/web/retrofit-demo-page")
+        IndexButton("/web/web-view-page")
         IndexButton("/aio/flow-demo-page")
         IndexButton("/db/demo-page")
         IndexButton("/net/jsch-ssh-client-page")
         IndexButton("/net/mina-sshd-client-page")
         IndexButton("/net/mina-sshd-server-page")
+        IndexButton("/ui/file-dialog-page")
+        IndexButton("/usart/serial-com-page")
     }
 }

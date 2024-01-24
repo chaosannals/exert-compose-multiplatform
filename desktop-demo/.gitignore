@@ -42,3 +42,9 @@ bin/
 .DS_Store
 
 *.key
+
+# KCEF
+/cache/
+/DawnCache/
+/GPUCache/
+/kcef-bundle/

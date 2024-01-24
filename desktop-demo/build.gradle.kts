@@ -13,6 +13,7 @@ version = "1.0-SNAPSHOT"
 repositories {
     mavenCentral()
     maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
+    maven("https://jogamp.org/deployment/maven") // webview
     google()
 }
 
@@ -21,6 +22,7 @@ dependencies {
     api(compose.foundation)
     api(compose.animation)
 
+    // 第三方导航组件 precompose
     val precomposeVersion="1.5.4"
     api("moe.tlaster:precompose:$precomposeVersion")
     api("moe.tlaster:precompose-molecule:$precomposeVersion") // For Molecule intergration
@@ -75,18 +77,33 @@ dependencies {
 
     // UI
     implementation("com.darkrockstudios:mpfilepicker:2.1.0") // 文件浏览器
+
+    // 此库依赖 KCEF
+    api("io.github.kevinnzou:compose-webview-multiplatform:1.8.4") // 第三方 WebView Cef 封装库
+
+    // 串口
+    implementation("com.fazecast:jSerialComm:2.10.4")
 }
 
 compose.desktop {
     application {
         mainClass = "MainKt"
 
+        // KCEF 需要添加的命令参数
+        jvmArgs("--add-opens", "java.desktop/sun.awt=ALL-UNNAMED")
+        jvmArgs("--add-opens", "java.desktop/java.awt.peer=ALL-UNNAMED") // recommended but not necessary
+        if (System.getProperty("os.name").contains("Mac")) {
+            jvmArgs("--add-opens", "java.desktop/sun.lwawt=ALL-UNNAMED")
+            jvmArgs("--add-opens", "java.desktop/sun.lwawt.macosx=ALL-UNNAMED")
+        }
+
         // 关闭 packageRelease* 的代码混淆，不然会失败。
         // 使用 package* 进行打包，packageRelease* = package* + ProGuard
         // 在不启用混淆的情况下，使用 package*
-        // buildTypes.release.proguard {
-        //     isEnabled.set(false)
-        // }
+         buildTypes.release.proguard {
+//             isEnabled.set(false)
+             configurationFiles.from("compose-desktop.pro")
+         }
 
         nativeDistributions {
             // 每种格式都依赖特定的打包工具。

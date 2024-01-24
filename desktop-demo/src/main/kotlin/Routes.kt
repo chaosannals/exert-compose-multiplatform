@@ -10,6 +10,9 @@ import page.net.JschSshClientPage
 import page.net.MinaSshdClientPage
 import page.net.MinaSshdServerPage
 import page.web.RetrofitDemoPage
+import page.web.WebViewPage
+import page.awtui.FileDialogPage
+import page.usart.SerialComPage
 
 val navigate = MutableSharedFlow<String>()
 
@@ -41,6 +44,12 @@ fun RouteBuilder.buildWeb() {
     ) {
         RetrofitDemoPage()
     }
+    scene(
+        route = "/web/web-view-page",
+        navTransition = NavTransition(),
+    ) {
+        WebViewPage()
+    }
 }
 
 fun RouteBuilder.buildAio() {
@@ -58,6 +67,15 @@ fun RouteBuilder.buildDb() {
         navTransition = NavTransition(),
     ) {
         DbDemoPage()
+    }
+}
+
+fun RouteBuilder.buildUi() {
+    scene(
+        route = "/ui/file-dialog-page",
+        navTransition = NavTransition(),
+    ) {
+        FileDialogPage()
     }
 }
 
@@ -79,5 +97,11 @@ fun RouteBuilder.buildNet() {
         navTransition = NavTransition(),
     ) {
         MinaSshdServerPage()
+    }
+}
+
+fun RouteBuilder.buildUsart() {
+    scene("/usart/serial-com-page") {
+        SerialComPage()
     }
 }

@@ -25,8 +25,11 @@ import server.myModule
 @Preview
 fun App() {
     val coroutineScope = rememberCoroutineScope()
+    ensureKCef({}, {})
 
     MaterialTheme {
+        // 第三方 precompose 导航，用法应该和安卓的官方导航差不多。
+        // 这个组件应该是跨平台。
         val navigator = rememberNavigator()
 
         LaunchedEffect(Unit) {
@@ -63,6 +66,8 @@ fun App() {
                 buildAio()
                 buildDb()
                 buildNet()
+                buildUi()
+                buildUsart()
             }
         }
     }
