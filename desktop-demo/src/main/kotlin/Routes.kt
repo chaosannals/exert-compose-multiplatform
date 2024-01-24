@@ -1,3 +1,5 @@
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import kotlinx.coroutines.flow.MutableSharedFlow
 import moe.tlaster.precompose.navigation.RouteBuilder
 import moe.tlaster.precompose.navigation.transition.NavTransition
@@ -15,23 +17,29 @@ import page.awtui.FileDialogPage
 import page.usart.SerialComPage
 
 val navigate = MutableSharedFlow<String>()
+private val transition = NavTransition(
+    createTransition = fadeIn(),
+    destroyTransition = fadeOut(),
+    pauseTransition = fadeOut(),
+    resumeTransition = fadeIn()
+)
 
 fun RouteBuilder.buildRoot() {
     scene(
         route = "/enter",
-        navTransition = NavTransition(),
+        navTransition = transition,
     ) {
         EnterPage()
     }
     scene(
         route = "/login",
-        navTransition = NavTransition(),
+        navTransition = transition,
     ) {
         LoginPage()
     }
     scene(
         route = "/index",
-        navTransition = NavTransition(),
+        navTransition = transition,
     ) {
         IndexPage()
     }
@@ -40,13 +48,13 @@ fun RouteBuilder.buildRoot() {
 fun RouteBuilder.buildWeb() {
     scene(
         route="/web/retrofit-demo-page",
-        navTransition = NavTransition(),
+        navTransition = transition,
     ) {
         RetrofitDemoPage()
     }
     scene(
         route = "/web/web-view-page",
-        navTransition = NavTransition(),
+        navTransition = transition,
     ) {
         WebViewPage()
     }
@@ -55,7 +63,7 @@ fun RouteBuilder.buildWeb() {
 fun RouteBuilder.buildAio() {
     scene(
         route="/aio/flow-demo-page",
-        navTransition = NavTransition(),
+        navTransition = transition,
     ) {
         FlowDemoPage()
     }
@@ -64,7 +72,7 @@ fun RouteBuilder.buildAio() {
 fun RouteBuilder.buildDb() {
     scene(
         route="/db/demo-page",
-        navTransition = NavTransition(),
+        navTransition = transition,
     ) {
         DbDemoPage()
     }
@@ -73,7 +81,7 @@ fun RouteBuilder.buildDb() {
 fun RouteBuilder.buildUi() {
     scene(
         route = "/ui/file-dialog-page",
-        navTransition = NavTransition(),
+        navTransition = transition,
     ) {
         FileDialogPage()
     }
@@ -82,26 +90,29 @@ fun RouteBuilder.buildUi() {
 fun RouteBuilder.buildNet() {
     scene(
         route="/net/jsch-ssh-client-page",
-        navTransition = NavTransition(),
+        navTransition = transition,
     ) {
         JschSshClientPage()
     }
     scene(
         route="/net/mina-sshd-client-page",
-        navTransition = NavTransition(),
+        navTransition = transition,
     ) {
         MinaSshdClientPage()
     }
     scene(
         route="/net/mina-sshd-server-page",
-        navTransition = NavTransition(),
+        navTransition = transition,
     ) {
         MinaSshdServerPage()
     }
 }
 
 fun RouteBuilder.buildUsart() {
-    scene("/usart/serial-com-page") {
+    scene(
+        route="/usart/serial-com-page",
+        navTransition = transition,
+    ) {
         SerialComPage()
     }
 }

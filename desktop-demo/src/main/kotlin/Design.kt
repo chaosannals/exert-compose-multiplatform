@@ -23,6 +23,10 @@ fun PickDensity() {
     }
 }
 
+inline val Float.dp2px: Float get() = run {
+    this * density.value.density
+}
+
 //val displayWidth: Int by lazy {
 //    Resources.getSystem().displayMetrics.widthPixels
 //}
