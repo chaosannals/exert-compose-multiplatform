@@ -14,6 +14,7 @@ import page.net.MinaSshdServerPage
 import page.web.RetrofitDemoPage
 import page.web.WebViewPage
 import page.awtui.FileDialogPage
+import page.cmui.ConfirmDialogPage
 import page.usart.SerialComPage
 
 val navigate = MutableSharedFlow<String>()
@@ -114,5 +115,14 @@ fun RouteBuilder.buildUsart() {
         navTransition = transition,
     ) {
         SerialComPage()
+    }
+}
+
+fun RouteBuilder.buildCmui() {
+    scene(
+        route = "/cmui/confirm-dialog-page",
+        navTransition = transition,
+    ) {
+        ConfirmDialogPage()
     }
 }

@@ -68,6 +68,7 @@ fun App() {
                 buildNet()
                 buildUi()
                 buildUsart()
+                buildCmui()
             }
         }
     }

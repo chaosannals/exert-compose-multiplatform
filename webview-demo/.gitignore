@@ -41,8 +41,6 @@ bin/
 ### Mac OS ###
 .DS_Store
 
-*.key
-
 # KCEF
 /cache/
 /DawnCache/

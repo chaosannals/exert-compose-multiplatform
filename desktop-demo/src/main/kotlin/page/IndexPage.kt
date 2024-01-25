@@ -40,5 +40,7 @@ fun IndexPage() {
         IndexButton("/net/mina-sshd-server-page")
         IndexButton("/ui/file-dialog-page")
         IndexButton("/usart/serial-com-page")
+
+        IndexButton("/cmui/confirm-dialog-page")
     }
 }
