@@ -6,25 +6,22 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.onClick
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.Dialog
 import dp2px
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import theme.themeColors
 import theme.themeShapes
 
@@ -36,18 +33,7 @@ enum class ConfirmDialogResult {
     No,
 }
 
-class ConfirmDialogManager {
-    private val visibleFlow = MutableStateFlow(false)
-    val visible = visibleFlow.asStateFlow()
-
-    fun open() {
-        visibleFlow.value = true
-    }
-
-    fun close() {
-        visibleFlow.value = false
-    }
-}
+class ConfirmDialogManager: ContentDialogManager() {}
 
 @Composable
 fun rememberOpenConfirmDialogForResult(
@@ -55,27 +41,21 @@ fun rememberOpenConfirmDialogForResult(
     content: String="确定吗？",
     onResult: (ConfirmDialogResult) -> Unit,
 ) :ConfirmDialogManager {
-    val inspectionMode = LocalInspectionMode.current
-    val manager = remember {
-        ConfirmDialogManager()
-    }
-    val visible by manager.visible.collectAsState(inspectionMode)
-
-    if (visible) {
-        Dialog(
-            onDismissRequest = { manager.close() }
+    return rememberOpenContentDialog(
+        factory = { ConfirmDialogManager() },
+        onDismissRequest = {
+            close()
+            onResult(ConfirmDialogResult.Cancel)
+        }
+    ) {
+        ConfirmDialogBox(
+            title,
+            content,
         ) {
-            ConfirmDialogBox(
-                title,
-                content,
-            ) {
-                manager.close()
-                onResult(it)
-            }
+            close()
+            onResult(it)
         }
     }
-
-    return manager
 }
 
 @OptIn(ExperimentalFoundationApi::class)

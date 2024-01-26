@@ -42,5 +42,6 @@ fun IndexPage() {
         IndexButton("/usart/serial-com-page")
 
         IndexButton("/cmui/confirm-dialog-page")
+        IndexButton("/cmui/lazy-layout-page")
     }
 }

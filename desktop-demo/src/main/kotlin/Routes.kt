@@ -15,6 +15,7 @@ import page.web.RetrofitDemoPage
 import page.web.WebViewPage
 import page.awtui.FileDialogPage
 import page.cmui.ConfirmDialogPage
+import page.cmui.LazyLayoutPage
 import page.usart.SerialComPage
 
 val navigate = MutableSharedFlow<String>()
@@ -124,5 +125,11 @@ fun RouteBuilder.buildCmui() {
         navTransition = transition,
     ) {
         ConfirmDialogPage()
+    }
+    scene(
+        route = "/cmui/lazy-layout-page",
+        navTransition = transition,
+    ) {
+        LazyLayoutPage()
     }
 }
