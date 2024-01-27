@@ -83,6 +83,10 @@ dependencies {
 
     // 串口
     implementation("com.fazecast:jSerialComm:2.10.4")
+
+    // UI 懒加载表
+    implementation("io.github.oleksandrbalan:lazytable:1.7.0")
+    implementation("io.github.oleksandrbalan:lazytable-jvm:1.7.0")
 }
 
 compose.desktop {

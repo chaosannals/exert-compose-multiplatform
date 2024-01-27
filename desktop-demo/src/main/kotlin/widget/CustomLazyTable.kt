@@ -5,14 +5,14 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.foundation.lazy.layout.LazyLayout
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 
+// TODO
 
-class LazyTableColumnScope<T>() {
+class CustomLazyTableColumnScope<T>() {
     var headCompose: @Composable ColumnScope.() -> Unit = {}
     var cellCompose: @Composable BoxScope.(T) -> Unit = { Text(it.toString())}
 
@@ -25,11 +25,11 @@ class LazyTableColumnScope<T>() {
     }
 }
 
-class LazyTableScope<T>() {
-    val columnsCompose = mutableListOf<LazyTableColumnScope<T>>()
+class CustomLazyTableScope<T>() {
+    val columnsCompose = mutableListOf<CustomLazyTableColumnScope<T>>()
 
-    fun column(definition: LazyTableColumnScope<T>.() -> Unit) {
-        val columnScope = LazyTableColumnScope<T>().apply {
+    fun column(definition: CustomLazyTableColumnScope<T>.() -> Unit) {
+        val columnScope = CustomLazyTableColumnScope<T>().apply {
             definition()
         }
         columnsCompose.add(columnScope)
@@ -38,12 +38,12 @@ class LazyTableScope<T>() {
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun <T> LazyTable(
+fun <T> CustomLazyTable(
     items: List<T>,
-    definition: LazyTableScope<T>.() -> Unit
+    definition: CustomLazyTableScope<T>.() -> Unit
 ) {
     val scope = remember(definition) {
-        LazyTableScope<T>().apply {
+        CustomLazyTableScope<T>().apply {
             definition()
         }
     }
@@ -78,7 +78,7 @@ fun <T> LazyTable(
 
 @Preview
 @Composable
-fun LazyTablePreview() {
+fun CustomLazyTablePreview() {
     val texts = remember {
         mutableStateListOf(
             "aaa",
@@ -102,7 +102,7 @@ fun LazyTablePreview() {
         )
     }
 
-    LazyTable(texts) {
+    CustomLazyTable(texts) {
         column {
             head {
                 Text("头部1")
